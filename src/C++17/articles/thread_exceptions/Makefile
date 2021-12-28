@@ -1,4 +1,13 @@
+.PHONY: prepare clean
 
-future:
-	clang++ -o future -lpthread --std=c++17 future.cpp
+all: prepare future thread_app
+
+clean:
+	rm -rf build
+
+prepare:
+	mkdir -p build
+
+%: %.cpp
+	clang++-11 -g -lpthread --std=c++20 -o build/$@ $@.cpp  
 
