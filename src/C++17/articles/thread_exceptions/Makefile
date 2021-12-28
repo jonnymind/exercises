@@ -1,6 +1,6 @@
 .PHONY: prepare clean
 
-all: prepare future thread_app
+all: prepare future thread_future thread_package thread_app
 
 clean:
 	rm -rf build

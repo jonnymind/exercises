@@ -10,14 +10,13 @@ int faulty(std::size_t element)
 
 int main() {
     try {
-        auto future = std::async(&faulty, 100);
+        auto future = std::async(std::launch::async, &faulty, 100);
         std::cout << "Element at position 100: " << future.get() << '\n';
+        return 0;
     }
     catch(std::exception& error) {
         std::cout << "Huston, we have a problem: " << error.what() << '\n';
         return 1;
     }
-
-    return 0;
 }
 
