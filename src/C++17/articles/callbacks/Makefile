@@ -1,6 +1,6 @@
 .PHONY: prepare clean
 
-all: prepare function function_pointer survival functor method
+all: prepare function function_pointer survival functor method interface
 
 clean:
 	rm -rf build

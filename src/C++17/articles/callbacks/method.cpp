@@ -35,7 +35,6 @@ int main()
     std::vector<int> data{1,2,3,4,5};
 
     auto multiplier = Multiplier{2};
-    // Actually, passing a std::function with a copy of multiplier.
     processor(data, std::bind(&Multiplier::callMeBack, &multiplier, std::placeholders::_1));
     std::cout << "Original data: ";
     for(const auto& element: multiplier.saved_data_) {
