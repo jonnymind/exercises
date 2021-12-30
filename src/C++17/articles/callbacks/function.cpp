@@ -5,11 +5,11 @@
 
 using Callback = std::function<int(int)>;
 
-void processor(const std::vector<int>& v, Callback CB)
+void processor(const std::vector<int>& v, Callback cb)
 {
     std::cout << "Process results: ";
     for(const auto& element: v) {
-        std::cout << element << ' ';
+        std::cout << cb(element) << ' ';
     }
     std::cout << '\n';
 }

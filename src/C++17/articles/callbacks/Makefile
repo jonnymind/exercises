@@ -1,6 +1,6 @@
 .PHONY: prepare clean
 
-all: prepare function function_pointer
+all: prepare function function_pointer survival
 
 clean:
 	rm -rf build
