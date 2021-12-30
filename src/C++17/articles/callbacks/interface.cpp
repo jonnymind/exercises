@@ -34,7 +34,6 @@ struct Multiplier
     };
 
     Multiplier(int multiplier): 
-        adapter_{this},
         multiplier_{multiplier} {}
         
     void setSize(int size) {size_ = size;}
@@ -51,10 +50,7 @@ struct Multiplier
         return value * multiplier_;
     }
 
-    const CallbackInterface& getAdapter() const {return adapter_;}
-
 private:
-    CallbackAdapter adapter_;
     int multiplier_;
     int size_;
     int count_{0};
@@ -73,6 +69,7 @@ void processor(const std::vector<int>& v, const CallbackInterface& cb)
 int main()
 {
     std::vector<int> data{1,2,3,4,5};
-    processor(data, Multiplier{2}.getAdapter());    
+    Multiplier multiplier{2};
+    processor(data, Multiplier::CallbackAdapter(&multiplier));    
     return 0;
 }
