@@ -29,7 +29,7 @@ private:
     int multiplier_;
 };
 
-// A non-functor class
+// A non-functor class.
 struct MultiplierClass
 {
     MultiplierClass(int multiplier): multiplier_{multiplier} {}
@@ -56,4 +56,5 @@ int main()
 
     // Callback using a lambda.
     processor(data, [](int value){return value * 2;});
+    return 0;
 }
