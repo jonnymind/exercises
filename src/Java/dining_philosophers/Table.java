@@ -67,7 +67,7 @@ public class Table {
     private boolean canProgress(Philosopher phil) {
         return phil.leftStick.isFree() && phil.rightStick.isFree()
             && (phil == waitingList.get(0) 
-                || waitingList.stream().filter(wphil -> adjacent(wphil, phil)).toList().size() == 2);
+                || waitingList.stream().filter(wphil -> adjacent(wphil, phil)).count() == 2);
     }
 
     private boolean adjacent(Philosopher left, Philosopher right) {

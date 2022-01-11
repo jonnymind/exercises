@@ -22,12 +22,12 @@ public class Philosopher implements Runnable {
     }
 
     private void think() throws InterruptedException{
-        display.update(id, PhilosopherStauts.THINKING);
+        display.update(id, 'T');
         Thread.sleep(ThreadLocalRandom.current().nextLong(100, maxWait));
     }
 
     private void eat() throws InterruptedException {
-        display.update(id, PhilosopherStauts.EATING);
+        display.update(id, 'E');
         Thread.sleep(ThreadLocalRandom.current().nextLong(100, maxWait));
     }
 
@@ -40,13 +40,13 @@ public class Philosopher implements Runnable {
                 table.layDown(leftStick, rightStick);
             }
             catch(InterruptedException e) {
-                display.update(id, PhilosopherStauts.TERMINATING);
+                display.update(id, 'x');
                 break;
             }
         }
     }
 
     void displayWait() {
-        display.update(id, PhilosopherStauts.WAITING);
+        display.update(id, 'W');
     }
 }
