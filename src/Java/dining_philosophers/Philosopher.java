@@ -32,7 +32,7 @@ public class Philosopher implements Runnable {
     }
 
     public void run() {
-        while (!end) {
+        while (true) {
             try {
                 think();
                 table.waitForSticks(this);
@@ -40,7 +40,8 @@ public class Philosopher implements Runnable {
                 table.layDown(leftStick, rightStick);
             }
             catch(InterruptedException e) {
-                end = true;
+                display.update(id, PhilosopherStauts.TERMINATING);
+                break;
             }
         }
     }

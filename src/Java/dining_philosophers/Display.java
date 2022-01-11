@@ -18,6 +18,7 @@ public class Display {
             case THINKING: symbol = 'T'; break;
             case EATING: symbol = 'E'; break;
             case WAITING: symbol = 'W'; break;
+            case TERMINATING: symbol = 'x'; break;
         }
         synchronized(this) {
             line.setCharAt(philosopher * 2, symbol);

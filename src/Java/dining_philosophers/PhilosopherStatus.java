@@ -4,5 +4,6 @@ enum PhilosopherStauts {
     NONE,
     THINKING,
     EATING,
-    WAITING
+    WAITING,
+    TERMINATING
 }
