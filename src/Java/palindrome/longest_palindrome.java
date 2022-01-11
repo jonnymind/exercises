@@ -1,6 +1,6 @@
 package palindrome;
 
-String FongestPalindrome(String word) 
+String LongestPalindrome(String word) 
 {
     if(word.length() == 0)
     return "";

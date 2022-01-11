@@ -1,24 +1,19 @@
-package dining_philosophers;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Philosopher implements Runnable {
+    int id;
     Stick leftStick;
     Stick rightStick;
-    private Display display;
-    int id;
+    
     private int maxWait;
-    private boolean end = false;
-    private Table table;
+    private Display display;
+    private DiningSurface table;
 
-    public Philosopher(int id, Table table, Display disp, int maxWait) {
+    public Philosopher(int id, DiningSurface table, Display disp, int maxWait) {
         this.id = id;
-        var sticks = table.seat(id);
-        this.leftStick = sticks[0];
-        this.rightStick = sticks[1];
+        this.table = table;
         this.display = disp;
         this.maxWait = maxWait;
-        this.table = table;
     }
 
     private void think() throws InterruptedException{
@@ -37,7 +32,7 @@ public class Philosopher implements Runnable {
                 think();
                 table.waitForSticks(this);
                 eat();
-                table.layDown(leftStick, rightStick);
+                table.layDownSticks(this);
             }
             catch(InterruptedException e) {
                 display.update(id, 'x');

@@ -1,5 +1,3 @@
-package dining_philosophers;
-
 class Stick {
     private boolean isUsed = false;
     int id;
