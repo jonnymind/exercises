@@ -38,6 +38,7 @@ class DiningSurface
 public:
     virtual bool waitForSticks(Philosopher&) = 0;
     virtual void layDownSticks(Philosopher&) = 0;
+    virtual bool waitFor(std::chrono::milliseconds howLong) = 0;
 };
 
 
@@ -79,12 +80,12 @@ public:
 
     void think() {
         display_.update(id_, 'T');
-        std::this_thread::sleep_for(random_wait_time_(random_engine_) * 1ms);
+        table_.waitFor(random_wait_time_(random_engine_) * 1ms);
     }
 
     void eat() {
         display_.update(id_, 'E');
-        std::this_thread::sleep_for(random_wait_time_(random_engine_) * 1ms);
+        table_.waitFor(random_wait_time_(random_engine_) * 1ms);
     }
 
     void run() {
@@ -129,6 +130,12 @@ public:
         for(int i = 0; i < philosopherCount; ++i) {
             seatPhilosophers(*philosophers_[i]);
         }
+    }
+
+    bool waitFor(std::chrono::milliseconds interval) override {
+        std::unique_lock guard{mutex_};
+        hasTerminated_.wait_for(guard, interval, [this](){return terminated_;});
+        return ! terminated_;
     }
 
     bool waitForSticks(Philosopher& phil) override {
@@ -192,6 +199,7 @@ public:
         }
         
         sticksChanged_.notify_all();
+        hasTerminated_.notify_all();
         for(std::size_t i = 0; i < philosophers_.size(); ++i) {
             philosophers_[i]->displayTerminate();
             philThreads_[i].join();
@@ -204,6 +212,7 @@ private:
 
     std::mutex mutex_;
     std::condition_variable sticksChanged_;
+    std::condition_variable hasTerminated_;
     std::deque<int> waitingList_;
     bool terminated_{false};
 
@@ -214,7 +223,7 @@ private:
 int main() {
     constexpr int size = 5;
     constexpr int maxPhilosopherWait = 3000;
-    constexpr int duration = 6000;
+    constexpr int duration = 60000;
 
     Display disp{size};
     Table table{size, disp, maxPhilosopherWait};

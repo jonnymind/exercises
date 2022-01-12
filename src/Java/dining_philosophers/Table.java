@@ -23,7 +23,6 @@ public class Table implements DiningSurface {
         for(int i = 0; i < philosopherCount; ++i) {
             seatPhilosophers(philosophers[i]);
         }
-
     }
 
     @Override
