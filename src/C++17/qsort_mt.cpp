@@ -22,6 +22,7 @@ std::size_t qsort_pivot(std::vector<T>& vect, std::size_t left, std::size_t righ
     if(left != right) {
         std::swap(vect[left], vect[right]);
     }
+
     return left;
 }
 

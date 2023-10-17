@@ -9,5 +9,5 @@ prepare:
 	mkdir -p build
 
 %: %.cpp
-	clang++-11 -g -lpthread --std=c++20 -o build/$@ $@.cpp  
+	clang++ -g -lpthread --std=c++20 -o build/$@ $@.cpp  
 
