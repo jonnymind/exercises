@@ -2,3 +2,4 @@
 workspace.*
 *.o
 *.class
+.DS_Store
