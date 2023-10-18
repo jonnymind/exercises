@@ -26,6 +26,8 @@ def find_start(area):
             if found_start and found_resource:
                 return frow, fcol
             if area_row[col] == 'x':
+                if found_start:
+                    raise RuntimeError("Area is not well formed.")
                 found_start = True
                 frow, fcol = row, col
             if area_row[col] == '*':
@@ -33,7 +35,8 @@ def find_start(area):
     raise RuntimeError("Area is not well formed.")
 
 
-def valid_position(area, row, col):
+def valid_position(area, hypothesis):
+    row, col = hypothesis
     return row >= 0 and row < len(area) and col >= 0 and col < len(area[0])
 
 
@@ -49,45 +52,36 @@ def value_of_path(area, path):
     return -value
 
 
-def search_resources(area, row, col, path, candidate):
-    if not valid_position(area, row, col) or (row, col) in path:
+def search_resources(area, path, solution):
+    path_value = value_of_path(area, path)
+    
+    # Candidate path value starts at -inf and is set only when a valid path is found.
+    # As the value of a path decreases as we meet radioactive areas, if we are on a path that is
+    # already worse than the solution, we're sure we can abandon that route.
+    if path_value < solution[0]:
         return
     
-    path.append((row, col))
+    row, col = path[-1]
+    if area[row][col] == '*':
+        if path_value > solution[0]:
+            solution[0] = path_value
+            solution[1] = path.copy()
+        return
+    
+    for rc in DIRS:
+        step = (row + rc[0], col + rc[1])
+        if valid_position(area, step) and step not in path:
+            path.append(step)
+            search_resources(area, path, solution)
+            path.pop()
 
-    # Ensure backtracking.
-    try:
-        path_value = value_of_path(area, path)
-        if area[row][col] == '*':
-            if path_value > candidate[0]:
-                candidate[0] = path_value
-                candidate[1] = path.copy()
-            return
-        
-        # Candidate path value starts at -inf and is set only when a valid path is found.
-        # As the value of a path decreases as we meet radioactive areas, if we are on a path that is
-        # already worse than the candidate, we're sure we can abandon that route.
-        if path_value < candidate[0]:
-            return
-        
-        best_path = None
-        best_value = float("-inf")
-        for rc in DIRS:
-            search_resources(area, row + rc[0], col + rc[1], path, candidate)
-    finally:
-        path.pop()
 
 def find_path(area):
     row, col = find_start(area)
-    candidate = [-float("inf"), []]
-    search_resources(area, row, col, [], candidate)
-    return candidate[1]
+    solution = [-float("inf"), None]
+    search_resources(area, [(row, col)], solution)
+    return solution[1]
 
 
-def main():
-    path = find_path(AREA)
-    print(f"Found path with value {value_of_path(AREA, path)}: {path}")
-
-
-if __name__ == "__main__":
-    main()
+path = find_path(AREA)
+print(f"Found path with value {value_of_path(AREA, path)}: {path}")

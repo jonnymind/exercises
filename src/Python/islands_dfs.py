@@ -1,10 +1,6 @@
 
 DIRS = [(-1,0), (1,0), (0,-1), (0,1)]
 
-
-
-
-
 def largest_island(grid):
     rows, cols = len(grid), len(grid[0])
     visited = [[False for _ in range(cols)] for _ in range(rows)]

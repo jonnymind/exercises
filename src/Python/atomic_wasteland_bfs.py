@@ -51,23 +51,26 @@ def valid_position(area, row, col):
 
 def find_path(area):
     row, col = find_start(area)
-    stack = [(0, [(row, col)])]
-    candidate = [-float("inf"), None]
+    stack = [ [(row, col)] ]
+    solution = [-float("inf"), None]
 
     while stack:
-        path_value, path = stack.pop()
+        path = stack.pop()
+        path_value = value_of_path(area, path)
         
-        # Candidate path value starts at -inf and is set only when a valid path is found.
+        # solution path value starts at -inf and is set only when a valid path is found.
         # As the value of a path decreases as we meet radioactive areas, if we are on a path that is
-        # already worse than the candidate, we're sure we can abandon that route.
-        if candidate[0] > path_value:
+        # already worse than the solution, we're sure we can abandon that route.
+        if solution[0] > path_value:
             continue
 
-        # Detect a complete path
+        # Detect a complete path.
+        # As we can cull, it wouldn't be necessary to check for path_value to be better
+        # than the current solution, we do that here for completeness.
         row, col = path[-1]
-        if area[row][col] == '*':
-            candidate[0] = path_value
-            candidate[1] = path
+        if area[row][col] == '*' and path_value > solution[0]:
+            solution[0] = path_value
+            solution[1] = path
             continue
             
         # Fill with alternative paths to follow
@@ -75,9 +78,9 @@ def find_path(area):
             if valid_position(area, row + drow, col + dcol):
                 npath = path.copy()
                 npath.append( (row + drow, col + dcol) )
-                stack.append( (value_of_path(area, path), npath) )
+                stack.append( npath )
 
-    return candidate[1]
+    return solution[1]
 
 
 def main():
