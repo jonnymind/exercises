@@ -12,7 +12,7 @@ def explore_islands(grid, current, state, solution):
     while len(to_visit) > 0:
         current = to_visit.pop()
 
-        if not valid_cell(current):
+        if not valid_cell(grid, current):
             continue
 
         r, c = current 

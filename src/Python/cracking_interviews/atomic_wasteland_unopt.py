@@ -87,9 +87,9 @@ def search_resources(area, current, status, solution):
 def find_path(area):
     row, col = find_start(area)
     solution = [-float("inf"), None]
-    search_resources(area, [(row, col)], solution)
-    return solution[1]
+    search_resources(area, (row, col), [[]], solution)
+    return solution
 
 
 path = find_path(AREA)
-print(f"Found path with value {value_of_path(AREA, path)}: {path}")
+print(f"Found path with value {path}")
